@@ -26,7 +26,7 @@ The main difference between the laravel and this implimentation is that typicall
 
 ```
 return response(['hello' => 'world'])->send();
-``
+```
 
 There are however custom helpers on top to provide a consistent ajax style responses, `ajax(), success(), error()`
 
