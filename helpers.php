@@ -1,9 +1,5 @@
 <?php
 
-require_once __DIR__ . '/Request.php';
-require_once __DIR__ . '/Response.php';
-require_once __DIR__ . '/Validator.php';
-
 function request(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
 {
 	$request = new \OwenMelbz\IllumiPress\Request($qery, $request, $attributes, $cookies, $files, $server, $content);

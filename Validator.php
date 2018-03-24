@@ -44,10 +44,10 @@ class Validator
     {
     	$messages = [];
 
-        foreach($this->validator->errors()->getMessages() as $field => $errors) {
+        foreach($this->validator->errors()->getMessages() as $field => $messages) {
             $messages[] = [
                 'param' => $field,
-                'errors' => $errors
+                'messages' => $messages
             ];
         }
 
