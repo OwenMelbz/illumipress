@@ -1,0 +1,24 @@
+{
+    "name": "owenmelbz/illumipress",
+    "description": "Simple wrapper for the illuminate http response, request and validation classes for WordPress",
+    "type": "library",
+    "require": {
+        "illuminate/http": "5.*",
+        "illuminate/validation": "5.*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Owen",
+            "email": "owenmelbz@gmail.com"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "./Validator.php",
+            "./Response.php",
+            "./Request.php",
+            "./helpers.php"
+        ]
+    }
+}
