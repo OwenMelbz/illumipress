@@ -1,8 +1,13 @@
 <?php
 
-function request(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
+function request(array $query = null, array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
 {
-	$request = new \OwenMelbz\IllumiPress\Request($qery, $request, $attributes, $cookies, $files, $server, $content);
+	if ($query === null) {
+		$request = \OwenMelbz\IllumiPress\Request::createFromGlobals();
+	} else {
+		$request = new \OwenMelbz\IllumiPress\Request($query, $request, $attributes, $cookies, $files, $server, $content);
+	}
+
 
 	return $request;
 }
