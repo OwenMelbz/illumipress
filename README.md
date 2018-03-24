@@ -1,6 +1,6 @@
 # IllumiPress
 
-IllumiPress is a simple wrapper for the laravel 5 illuminate http request, response and validator allowing it to be easily imported into any PHP 7+ project.
+IllumiPress is a simple wrapper for the laravel 5 illuminate support, http request, response and validator allowing it to be easily imported into any PHP 7+ project.
 
 Initially designed to bring illuminate support to wordpress, which is how we get IllumiPress.
 
@@ -11,6 +11,18 @@ There is no WordPress specific code within the project, meaning this can be used
 The easiest way to install is via composer e.g `composer require owenmelbz/illumipress` from within your project root.
 
 Even if your project is not using composer you can use the above command, but then you must manually include `vendor/autoload.php` in your project, for wordpress consider using the `functions.php`
+
+## Features
+
+As the illuminate packages require the illuminate/support package, you also get access to an array of magic such as
+
+- collections via `collect`
+- both `dump` and `dd`
+- array helpers such as `data_get`, `array_wrap`, `array_dot` etc
+- string helpers e.g `ends_with`, `starts_with`, `str_contains`, `str_random`
+- logical helpers such as `optional`, `tap`, `throw_if`
+
+You can see a full list of included components https://github.com/illuminate/support
 
 ## Usage
 
