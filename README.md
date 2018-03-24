@@ -18,7 +18,7 @@ The package has a child class which extends the core illuminate classes to add s
 
 ### Request Class
 
-This does not currently have any custom functionality, you should be able to use the documentation provided https://laravel.com/docs/5.6/requests - you have access to a global helper `request()` to get a new instance of the request object, so you can do things such as "request()->get('my_posted_data', 'default value')" etc.
+This does not currently have any custom functionality, you should be able to use the documentation provided https://laravel.com/docs/5.6/requests - you have access to a global helper `request()` to get a new instance of the request object, so you can do things such as `request()->get('my_posted_data', 'default value')` etc.
 
 ### Response Class
 
