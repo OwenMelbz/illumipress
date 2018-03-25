@@ -53,7 +53,6 @@ class Response extends IlluminateResponce
             return $this;
         }
 
-
         return $this->send();
     }
 
@@ -132,4 +131,5 @@ class Response extends IlluminateResponce
         
         return $this->ajaxTransform($status, $return);
     }
+    
 }

@@ -4,6 +4,7 @@ use PHPUnit\Framework\TestCase;
 
 class HelperTest extends TestCase
 {
+
     public function testRequestHelper()
     {
         $this->assertInstanceOf('OwenMelbz\IllumiPress\Request', request());
@@ -30,4 +31,5 @@ class HelperTest extends TestCase
         $this->assertTrue(function_exists('tap'));
         $this->assertTrue(function_exists('array_wrap'));
     }
+    
 }

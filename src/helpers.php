@@ -69,7 +69,6 @@ if (! function_exists('dump')) {
      */
     function dump(...$args)
     {
-
         foreach ($args as $x) {
             (new \Illuminate\Support\Debug\Dumper)->dump($x);
         }

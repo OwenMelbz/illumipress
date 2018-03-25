@@ -63,4 +63,5 @@ class ResponseTest extends TestCase
 
         $this->assertEquals(400, $result);
     }
+    
 }

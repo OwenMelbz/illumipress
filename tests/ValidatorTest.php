@@ -1,7 +1,7 @@
 <?php
 
-use OwenMelbz\IllumiPress\Validator;
 use PHPUnit\Framework\TestCase;
+use OwenMelbz\IllumiPress\Validator;
 
 class ValidatorTest extends TestCase
 {
@@ -41,6 +41,29 @@ class ValidatorTest extends TestCase
         $this->assertNotEmpty($messages);
     }
 
+    public function testFormattedCustomErrors()
+    {
+        $validator = new Validator([], ['name' => 'required']);
+
+        $expected = [
+            [
+                'param' => 'name',
+                'messages' => [],
+            ]
+        ];
+
+        $messages = [
+            'name' => [
+                'some validation error'
+            ]
+        ];
+
+        $messages = $validator->formattedErrors($messages);
+
+        $this->assertArraySubset($expected, $messages);
+        $this->assertNotEmpty($messages);
+    }
+
     public function testAjax()
     {
         $validator = new Validator([], ['name' => 'required']);
@@ -50,4 +73,5 @@ class ValidatorTest extends TestCase
         $this->assertInstanceOf('OwenMelbz\IllumiPress\Response', $response);
         $this->assertEquals(422, $response->getStatusCode());
     }
+    
 }

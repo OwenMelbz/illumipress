@@ -14,6 +14,7 @@ use Illuminate\Translation\Translator;
  */
 class Validator
 {
+
     /**
      * Provides access to the underlying validator
      *
@@ -73,14 +74,15 @@ class Validator
      *
      * @return array
      */
-    public function formattedErrors()
+    public function formattedErrors(array $messages = null)
     {
         $errors = [];
+        $messages = $messages ?: $this->validator->errors()->getMessages();
 
-        foreach ($this->validator->errors()->getMessages() as $field => $messages) {
+        foreach ($messages as $field => $_messages) {
             $errors[] = [
                 'param' => $field,
-                'messages' => $messages
+                'messages' => $_messages
             ];
         }
 
@@ -126,4 +128,5 @@ class Validator
     {
         return call_user_func_array([$this->validator, $method], $args);
     }
+    
 }
