@@ -10,9 +10,9 @@ use Illuminate\Translation\Translator;
 
 class Validator
 {
-	protected $validator;
+    protected $validator;
 
-	protected $messages = [];
+    protected $messages = [];
 
     public function __construct(array $data = [], array $rules = [], array $messageArray = [])
     {
@@ -31,20 +31,20 @@ class Validator
 
     public function setLanguageFile($file)
     {
-    	if (!file_exists($file)) {
-    		throw new Exception('Language file does not exist');
-    	}
+        if (!file_exists($file)) {
+            throw new Exception('Language file does not exist');
+        }
 
-    	$this->messages = include $file;
+        $this->messages = include $file;
 
-    	return $this;
+        return $this;
     }
 
     public function formattedErrors()
     {
-    	$messages = [];
+        $messages = [];
 
-        foreach($this->validator->errors()->getMessages() as $field => $messages) {
+        foreach ($this->validator->errors()->getMessages() as $field => $messages) {
             $messages[] = [
                 'param' => $field,
                 'messages' => $messages
@@ -56,18 +56,18 @@ class Validator
 
     public function ajax()
     {
-    	if ($this->validator->passes()) {
-    		return response()->success(null);
-    	}
+        if ($this->validator->passes()) {
+            return response()->success(null);
+        }
 
-    	return response(
-    		$this->formattedErrors()
-    	)->error(422);
+        return response(
+            $this->formattedErrors()
+        )->error(422);
     }
 
     public function response()
     {
-    	return $this->ajax();
+        return $this->ajax();
     }
 
     public function __call($method, $args)
