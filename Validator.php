@@ -8,12 +8,28 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Translation\FileLoader;
 use Illuminate\Translation\Translator;
 
+/**
+ * Class Validator
+ * @package OwenMelbz\IllumiPress
+ */
 class Validator
 {
+    /**
+     * @var \Illuminate\Validation\Validator
+     */
     protected $validator;
 
+    /**
+     * @var array
+     */
     protected $messages = [];
 
+    /**
+     * Validator constructor.
+     * @param array $data
+     * @param array $rules
+     * @param array $messageArray
+     */
     public function __construct(array $data = [], array $rules = [], array $messageArray = [])
     {
         $filesystem = new Filesystem();
@@ -29,6 +45,11 @@ class Validator
         return $this;
     }
 
+    /**
+     * @param $file
+     * @return $this
+     * @throws Exception
+     */
     public function setLanguageFile($file)
     {
         if (!file_exists($file)) {
@@ -40,6 +61,9 @@ class Validator
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function formattedErrors()
     {
         $messages = [];
@@ -54,6 +78,9 @@ class Validator
         return $messages;
     }
 
+    /**
+     * @return Response
+     */
     public function ajax()
     {
         if ($this->validator->passes()) {
@@ -65,11 +92,19 @@ class Validator
         )->error(422);
     }
 
+    /**
+     * @return Response
+     */
     public function response()
     {
         return $this->ajax();
     }
 
+    /**
+     * @param $method
+     * @param $args
+     * @return mixed
+     */
     public function __call($method, $args)
     {
         return call_user_func_array([$this->validator, $method], $args);

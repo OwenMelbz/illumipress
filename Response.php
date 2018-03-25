@@ -4,13 +4,24 @@ namespace OwenMelbz\IllumiPress;
 
 use \Illuminate\Http\Response as IlluminateResponce;
 
+/**
+ * Class Response
+ * @package OwenMelbz\IllumiPress
+ */
 class Response extends IlluminateResponce
 {
 
+    /**
+     * @var array
+     */
     public $meta = [
         'success' => true
     ];
 
+    /**
+     * @param int|null $status
+     * @return $this
+     */
     private function ajaxTransform(int $status = null)
     {
         if ($status) {
@@ -35,11 +46,18 @@ class Response extends IlluminateResponce
         return $this->send();
     }
 
+    /**
+     * @return array
+     */
     public function getMeta()
     {
         return $this->meta;
     }
 
+    /**
+     * @param array $meta
+     * @return $this
+     */
     public function setMeta(array $meta)
     {
         $this->meta = $meta;
@@ -47,6 +65,10 @@ class Response extends IlluminateResponce
         return $this;
     }
 
+    /**
+     * @param array $meta
+     * @return $this
+     */
     public function addMeta(array $meta)
     {
         $this->meta = array_merge($this->meta, $meta);
@@ -54,16 +76,28 @@ class Response extends IlluminateResponce
         return $this;
     }
 
+    /**
+     * @param int|null $status
+     * @return Response
+     */
     public function ajax(int $status = null)
     {
         return $this->ajaxTransform($status);
     }
 
+    /**
+     * @param int|null $status
+     * @return Response
+     */
     public function success(int $status = null)
     {
         return $this->ajaxTransform($status);
     }
 
+    /**
+     * @param int $status
+     * @return Response
+     */
     public function error(int $status = 400)
     {
         $this->addMeta([
