@@ -15,17 +15,22 @@ use Illuminate\Translation\Translator;
 class Validator
 {
     /**
+     * Provides access to the underlying validator
+     *
      * @var \Illuminate\Validation\Validator
      */
-    protected $validator;
+    public $validator;
 
     /**
+     * Stores the language strings for validation message replacement
+     *
      * @var array
      */
-    protected $messages = [];
+    public $messages = [];
 
     /**
-     * Validator constructor.
+     * Creates a new instance of the IllumiPress Validator
+     *
      * @param array $data
      * @param array $rules
      * @param array $messageArray
@@ -46,61 +51,73 @@ class Validator
     }
 
     /**
+     * Accepts a file path which loads in language strings for error message replacement
+     *
      * @param $file
      * @return $this
      * @throws Exception
      */
-    public function setLanguageFile($file)
+    public function setLanguageFile($filePath)
     {
-        if (!file_exists($file)) {
+        if (!file_exists($filePath)) {
             throw new Exception('Language file does not exist');
         }
 
-        $this->messages = include $file;
+        $this->messages = include $filePath;
 
         return $this;
     }
 
     /**
+     * Returns a consistent format for errors which can be used on most frontend clients
+     *
      * @return array
      */
     public function formattedErrors()
     {
-        $messages = [];
+        $errors = [];
 
         foreach ($this->validator->errors()->getMessages() as $field => $messages) {
-            $messages[] = [
+            $errors[] = [
                 'param' => $field,
                 'messages' => $messages
             ];
         }
 
-        return $messages;
+        return $errors;
     }
 
     /**
+     * Dispatches either a positive or negative response based off the validation result
+     *
      * @return Response
+     * @param bool $return
      */
-    public function ajax()
+    public function ajax(bool $return = false)
     {
         if ($this->validator->passes()) {
-            return response()->success(null);
+            return response()->success(null, $return);
         }
 
         return response(
             $this->formattedErrors()
-        )->error(422);
+        )->error(422, $return);
     }
 
     /**
+     * An alias for ajax()
+     *
      * @return Response
+     * @param bool $return
      */
-    public function response()
+    public function response(bool $return = false)
     {
-        return $this->ajax();
+        return $this->ajax($return);
     }
 
     /**
+     * Allows you to easily call any underlying validator methods
+     *
      * @param $method
      * @param $args
      * @return mixed
