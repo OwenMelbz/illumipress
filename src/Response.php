@@ -128,8 +128,19 @@ class Response extends IlluminateResponce
         $this->addMeta([
             'success' => false
         ]);
-        
+
         return $this->ajaxTransform($status, $return);
     }
-    
+
+    /**
+     * Sends HTTP headers and content, then dies as wordpress will append a 0 otherwise
+     *
+     * @return void
+     */
+    public function send()
+    {
+        parent::send();
+        die();
+    }
+
 }
