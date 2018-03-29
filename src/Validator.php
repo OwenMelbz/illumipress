@@ -66,6 +66,8 @@ class Validator
 
         $this->messages = include $filePath;
 
+        $this->validator->setCustomMessages($this->messages);
+
         return $this;
     }
 
@@ -128,5 +130,5 @@ class Validator
     {
         return call_user_func_array([$this->validator, $method], $args);
     }
-    
+
 }
