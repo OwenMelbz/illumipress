@@ -36,7 +36,7 @@ class Validator
      * @param array $rules
      * @param array $messageArray
      */
-    public function __construct(array $data = [], array $rules = [], array $messageArray = [])
+    public function __construct(array $data = [], array $rules = [], array $messageArray = [], array $customAttributes = [])
     {
         $filesystem = new Filesystem();
         $fileLoader = new FileLoader($filesystem, '');
@@ -46,7 +46,7 @@ class Validator
         $illuminateMessages = include __DIR__ . '/i18n/en.php';
         $messages = array_merge($illuminateMessages, $this->messages, $messageArray);
 
-        $this->validator = $factory->make($data, $rules, $messages);
+        $this->validator = $factory->make($data, $rules, $messages, $customAttributes);
 
         return $this;
     }

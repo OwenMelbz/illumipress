@@ -52,9 +52,9 @@ if (! function_exists('validator')) {
      * @param array $messages
      * @return \OwenMelbz\IllumiPress\Validator
      */
-    function validator(array $data = [], array $rules = [], array $messages = [])
+    function validator(array $data = [], array $rules = [], array $messages = [], array $customAttributes = [])
     {
-        $validator = new \OwenMelbz\IllumiPress\Validator($data, $rules, $messages);
+        $validator = new \OwenMelbz\IllumiPress\Validator($data, $rules, $messages, $customAttributes);
 
         return $validator;
     }
