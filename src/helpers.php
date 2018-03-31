@@ -60,6 +60,17 @@ if (! function_exists('validator')) {
     }
 }
 
+if (! function_exists('http')) {
+    /**
+     * @param array ...$args
+     * @return \Zttp\PendingZttpRequest
+     */
+    function http(...$args)
+    {
+        return \Zttp\PendingZttpRequest::new(...$args);
+    }
+}
+
 if (! function_exists('dump')) {
     /**
      * Dump the passed variables
