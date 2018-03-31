@@ -67,6 +67,10 @@ if (! function_exists('http')) {
      */
     function http(...$args)
     {
+        if (count($args) === 1) {
+            return \Zttp\Zttp::get(current($args))->body();
+        }
+
         return \Zttp\PendingZttpRequest::new(...$args);
     }
 }

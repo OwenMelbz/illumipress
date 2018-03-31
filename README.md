@@ -21,6 +21,7 @@ As the illuminate packages require the illuminate/support package, you also get 
 - array helpers such as `data_get`, `array_wrap`, `array_dot` etc
 - string helpers e.g `ends_with`, `starts_with`, `str_contains`, `str_random`
 - logical helpers such as `optional`, `tap`, `throw_if`
+- access to Guzzle via `kitetail\zttp` and a `http()` helper
 
 You can see a full list of included components https://github.com/illuminate/support
 
@@ -116,6 +117,29 @@ If you need to use translations you can load your custom messages file e.g
 $validator = validator($data, $rules);
 $validator->setLanguageFile(__DIR__ . '/i18n/french.php');
 ```
+
+## HTTP Client / Guzzle / cURL / zttp
+
+We also include the `kitetail/zttp` library for a simple curl access via the `http()` helper, for full information we recommend checking out the zttp github documentation
+
+```
+$stringResponse = http('https:/www.google.com');
+```
+
+for a simple curl GET request you can use the above, for more complicated requests you can use the fuller syntax, which returns an instance of `ZttpResponse`
+
+```
+$response = http()->post('https://www.google.com/', ['q' => 'my query']);
+
+if ($response->isOkay()) {
+    echo $response->body();
+    echo $response->json();
+    echo etc...
+}
+
+``` 
+
+As `zttp` uses Guzzle under the hood, which means you can also get access to the full guzzle suite and do things such as `(new Guzzle\Client)->setBaseUri('https://www.google.com/')->post('search', ['q' => 'query''])`;
 
 ## License
 This is a completely free and open source project, feel free to use it for anything you like, if you wish to modify and redistribute it however, please give some credit back to the original repository.

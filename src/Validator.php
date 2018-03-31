@@ -46,7 +46,7 @@ class Validator
         $illuminateMessages = include __DIR__ . '/i18n/en.php';
         $messages = array_merge($illuminateMessages, $this->messages, $messageArray);
 
-        $this->validator = $factory->resolve($data, $rules, $messages, $customAttributes);
+        $this->validator = $factory->make($data, $rules, $messages, $customAttributes);
 
         return $this;
     }

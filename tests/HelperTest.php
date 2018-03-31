@@ -31,5 +31,12 @@ class HelperTest extends TestCase
         $this->assertTrue(function_exists('tap'));
         $this->assertTrue(function_exists('array_wrap'));
     }
+
+    public function testCanMakeZttpCall()
+    {
+        $this->assertInstanceOf('Zttp\PendingZttpRequest', http());
+        $this->assertInternalType('string', http('https://www.google.com'));
+    }
+
     
 }
