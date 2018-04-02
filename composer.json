@@ -14,11 +14,25 @@
             "email": "owenmelbz@gmail.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "ekandreas/bladerunner",
+                "version": "1.7.4",
+                "dist": {
+                    "url": "https://github.com/ekandreas/bladerunner/archive/1.7.4.zip",
+                    "type": "zip"
+                }
+            }
+        }
+    ],
     "autoload": {
         "files": [
             "./src/Validator.php",
             "./src/Response.php",
             "./src/Request.php",
+            "./src/Blade.php",
             "./src/helpers.php"
         ]
     },
