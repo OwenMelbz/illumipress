@@ -1,6 +1,6 @@
 # IllumiPress
 
-IllumiPress is a simple wrapper for the laravel 5 illuminate support, http request, response and validator allowing it to be easily imported into any PHP 7+ project.
+IllumiPress is a simple wrapper for the laravel 5 illuminate support, http request, response, validator and blade allowing it to be easily imported into any PHP 7+ project.
 
 Initially designed to bring illuminate support to wordpress, which is how we get IllumiPress.
 
@@ -22,6 +22,7 @@ As the illuminate packages require the illuminate/support package, you also get 
 - string helpers e.g `ends_with`, `starts_with`, `str_contains`, `str_random`
 - logical helpers such as `optional`, `tap`, `throw_if`
 - access to Guzzle via `kitetail\zttp` and a `http()` helper
+- laravel blade template rendering using `filename.blade.php`
 
 You can see a full list of included components https://github.com/illuminate/support
 
@@ -117,6 +118,18 @@ If you need to use translations you can load your custom messages file e.g
 $validator = validator($data, $rules);
 $validator->setLanguageFile(__DIR__ . '/i18n/french.php');
 ```
+
+## Laravel Blade (beta)
+
+Blade has also been included to allow a more fluent syntax for rendering templates.
+
+By default it is enabled - however you can turn it off by using `turn_blade_off()` and `turn_blade_on()`
+
+If you name your files `template.blade.php` blade can render the template directly, however if you enable blade and have normal `template.php` files, it will create a dynamic copy within the `wp-content/uploads/.cache/` which will update each time you make a file change.
+
+The integration is loosely based off https://github.com/tormjens/wp-blade which means you get some starter directives such as, `@post, @wpquery() @acf @acfhas @acffield @acfsub`
+
+It is still in "beta" at the moment as needs tests written for it, and needs several more methods adding, for rendering includes, partials, stacks etc, but that will come soon.
 
 ## HTTP Client / Guzzle / cURL / zttp
 
