@@ -5,7 +5,8 @@
     "require": {
         "illuminate/http": "5.*",
         "illuminate/validation": "5.*",
-        "kitetail/zttp": "^0.3.0"
+        "kitetail/zttp": "^0.3.0",
+        "ekandreas/bladerunner": "1.7.4"
     },
     "license": "MIT",
     "authors": [
