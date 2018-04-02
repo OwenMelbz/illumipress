@@ -6,7 +6,11 @@
         "illuminate/http": "5.*",
         "illuminate/validation": "5.*",
         "kitetail/zttp": "^0.3.0",
-        "ekandreas/bladerunner": "1.7.4"
+        "ekandreas/bladerunner": "1.7.4",
+        "illuminate/config": "5.*",
+        "illuminate/view": "5.*",
+        "symfony/yaml": "^3.0",
+        "brain/hierarchy": "^2.0"
     },
     "license": "MIT",
     "authors": [
