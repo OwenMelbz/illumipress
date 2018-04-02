@@ -30,11 +30,11 @@ You can see a full list of included components https://github.com/illuminate/sup
 
 The package has a child class which extends the core illuminate classes to add some additional helper functions.
 
-### Request Class
+## Request Class
 
 This does not currently have any custom functionality, you should be able to use the documentation provided https://laravel.com/docs/5.6/requests - you have access to a global helper `request()` to get a new instance of the request object, so you can do things such as `request()->get('my_posted_data', 'default value')` etc.
 
-### Response Class
+## Response Class
 
 The main difference between the laravel and this implimentation is that typically you must manually use symfonys "send()" method to complete the request e.g.
 
@@ -77,7 +77,7 @@ return response('My response')->addMeta(['key' => 'value'])->send();
 
 You can completely overwrite the meta using `setMeta` method.
 
-### Validation class
+## Validation class
 
 This provides 2 extra methods on top of the validation class, firstly the ability to return a formatted list of errors using `$validator->formattedErrors()` and an ajax result using the previously mentioned automatic formatting by `$validator->response()`.
 
