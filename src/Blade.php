@@ -66,12 +66,12 @@ class Blade
             apply_filters(
                 'wp_blade_cache_directory',
                 defined('BLADE_CACHE') ?
-                BLADE_CACHE : trailingslashit(wp_upload_dir()) . '.cache'
+                BLADE_CACHE : trailingslashit(wp_upload_dir()['basedir']) . '.cache'
             )
         );
 
         // Set class properties
-        $this->views = array( $viewDirectory );
+        $this->views = [$viewDirectory];
         $this->cache = $cacheDirectory;
         $this->view_cache = $this->views[0] . 'cache';
 
@@ -106,6 +106,7 @@ class Blade
         if (is_null(self::$_instance)) {
             self::$_instance = new self();
         }
+
         return self::$_instance;
     }
 
@@ -180,6 +181,7 @@ class Blade
     public static function render($template, $with = [])
     {
         $instance = self::instance();
+
         return $instance->view($template, $with);
     }
 
@@ -195,6 +197,7 @@ class Blade
     public static function renderString($string, $with = [])
     {
         $instance = self::instance();
+
         return $instance->viewString($string, $with);
     }
 
@@ -210,6 +213,7 @@ class Blade
                 return true;
             }
         }
+
         return false;
     }
 
@@ -225,6 +229,7 @@ class Blade
                 return true;
             }
         }
+
         return false;
     }
 
@@ -264,11 +269,8 @@ class Blade
             // blade friendly name
             $view = str_replace('.php', '', $file);
 
-            // get data for the view
-            $data = $this->getController($view);
-
             // run the blade code
-            echo $this->view('cache.'. $view, $data);
+            echo $this->view('cache.'. $view);
 
             // halt including
             return '';
@@ -279,11 +281,8 @@ class Blade
             // blade friendly name
             $view = str_replace('.php', '', $file);
 
-            // get data for the view
-            $data = $this->getController($view);
-
             // run the blade code
-            echo $this->view('cache.'. $view, $data);
+            echo $this->view('cache.'. $view);
 
             // halt including
             return '';
@@ -291,27 +290,6 @@ class Blade
 
         // return an empty string to stop wordpress from including the template when we are doing it
         return $template;
-    }
-
-    /**
-     * Check if the view has a controller which can be attached
-     *
-     * @param string  $view The view name
-     * @return mixed A controller instance or false
-     */
-    protected function getController($view)
-    {
-        return $this->controller->getControllersForView($view);
-    }
-
-    /**
-     * Adds controller
-     *
-     * @param mixed   $controller Array or string of class names
-     */
-    public function addController($controller)
-    {
-        $this->controller->register($controller);
     }
 
     /**
@@ -362,10 +340,6 @@ class Blade
      */
     protected function extend()
     {
-
-        /**
-         * WP Query Directives
-         */
         $this->compiler()->directive('wpposts', function () {
             return '<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>';
         });
@@ -386,14 +360,11 @@ class Blade
             return '<?php endif; wp_reset_postdata(); ?>';
         });
 
-        /**
-         * Advanced Custom Field Directives
-         */
-
         $this->compiler()->directive('acfempty', function () {
             if (function_exists('get_field')) {
                 return '';
             }
+
             return '<?php endwhile; ?><?php else: ?>';
         });
 
@@ -401,6 +372,7 @@ class Blade
             if (function_exists('get_field')) {
                 return '';
             }
+
             return '<?php endif; ?>';
         });
 
@@ -408,8 +380,10 @@ class Blade
             if (function_exists('get_field')) {
                 return '';
             }
+
             $php = '<?php if ( have_rows'.$expression.' ) : ';
             $php .= 'while ( have_rows'.$expression.' ) : the_row(); ?>';
+
             return $php;
         });
 
@@ -417,8 +391,10 @@ class Blade
             if (function_exists('get_field')) {
                 return '';
             }
+
             $php = '<?php if ( get_field'.$expression.' ) : ';
             $php .= 'the_field'.$expression.'; endif; ?>';
+
             return $php;
         });
 
@@ -426,7 +402,9 @@ class Blade
             if (function_exists('get_field')) {
                 return '';
             }
+
             $php = '<?php if ( $field = get_field'.$expression.' ) : ';
+            
             return $php;
         });
 
@@ -434,8 +412,10 @@ class Blade
             if (function_exists('get_field')) {
                 return '';
             }
+            
             $php = '<?php if ( get_sub_field'.$expression.' ) : ';
             $php .= 'the_sub_field'.$expression.'; endif; ?>';
+            
             return $php;
         });
 
