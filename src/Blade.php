@@ -73,7 +73,7 @@ class Blade
         // Set class properties
         $this->views = [$viewDirectory];
         $this->cache = $cacheDirectory;
-        $this->view_cache = $this->views[0] . 'cache';
+        $this->view_cache = $this->views[0];
 
         // Create cache directories if needed
         $this->maybeCreateCacheDirectory();
@@ -258,7 +258,7 @@ class Blade
 
             // with a blade extension, we have to do this because blade wont recognize the root files without the .blade.php extension
             $blade = str_replace('.php', '.blade.php', $file);
-            $blade_file = $this->view_cache . '/' . $blade;
+            $blade_file = rtrim($this->view_cache, '/') . '/' . trim($blade, '/');
 
             // get the code
             $code = file_get_contents($template);
