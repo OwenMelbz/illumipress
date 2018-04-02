@@ -142,5 +142,4 @@ class Response extends IlluminateResponce
         parent::send();
         die();
     }
-
 }

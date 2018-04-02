@@ -37,6 +37,4 @@ class HelperTest extends TestCase
         $this->assertInstanceOf('Zttp\PendingZttpRequest', http());
         $this->assertInternalType('string', http('https://www.google.com'));
     }
-
-    
 }

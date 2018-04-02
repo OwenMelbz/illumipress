@@ -89,3 +89,33 @@ if (! function_exists('dump')) {
         }
     }
 }
+
+if (! function_exists('turn_blade_off')) {
+    /**
+     * Prevents passing of templates to blade
+     */
+    function turn_blade_off()
+    {
+        \OwenMelbz\IllumiPress\Blade::turnOff();
+    }
+}
+
+if (! function_exists('turn_blade_on')) {
+    /**
+     * Enables the passing of templates to blade
+     */
+    function turn_blade_on()
+    {
+        \OwenMelbz\IllumiPress\Blade::turnOn();
+    }
+}
+
+if (! function_exists('clear_blade_cache')) {
+    /**
+     * Clears the blade cache
+     */
+    function clear_blade_cache()
+    {
+        \OwenMelbz\IllumiPress\Blade::clearCache();
+    }
+}

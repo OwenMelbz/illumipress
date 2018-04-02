@@ -130,5 +130,4 @@ class Validator
     {
         return call_user_func_array([$this->validator, $method], $args);
     }
-
 }

@@ -73,5 +73,4 @@ class ValidatorTest extends TestCase
         $this->assertInstanceOf('OwenMelbz\IllumiPress\Response', $response);
         $this->assertEquals(422, $response->getStatusCode());
     }
-    
 }

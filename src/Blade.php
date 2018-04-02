@@ -2,6 +2,8 @@
 
 namespace OwenMelbz\IllumiPress;
 
+use \Illuminate\Filesystem\Filesystem;
+
 /**
  * Uses the Blade templating engine
  * Originally written by tormjens/wp-blade
@@ -9,6 +11,11 @@ namespace OwenMelbz\IllumiPress;
  */
 class Blade
 {
+
+    /**
+     * @var bool
+     */
+    protected static $enabled = true;
 
     /**
      * The single instance of the class.
@@ -20,7 +27,7 @@ class Blade
     /**
      * View factory
      *
-     * @var OwenMelbz\Illuminate\BladeFactory
+     * @var OwenMelbz\IllumiPress\BladeFactory
      */
     protected $factory;
 
@@ -30,13 +37,6 @@ class Blade
      * @var string
      */
     protected $views;
-
-    /**
-     * View cache
-     *
-     * @var string
-     */
-    protected $view_cache;
 
     /**
      * Cache folder
@@ -71,25 +71,63 @@ class Blade
         );
 
         // Set class properties
-        $this->views = [$viewDirectory];
+        $this->views = [
+            $viewDirectory,
+            $cacheDirectory
+        ];
+
         $this->cache = $cacheDirectory;
-        $this->view_cache = $this->views[0];
 
         // Create cache directories if needed
         $this->maybeCreateCacheDirectory();
-        $this->maybeCreateViewCacheDirectory();
 
         // Create the blade instance
         $this->factory = new BladeFactory($this->views, $this->cache);
 
-         // extend the compiler
+        // extend the compiler
         $this->extend();
-
-        if ($actions) {
-            add_action('template_include', array( $this, 'blade_include' ));
+        
+        if ($actions && static::isEnabled()) {
+            add_action('template_include', array($this, 'blade_include'));
         }
 
         do_action('wp_blade_booted', $this);
+    }
+
+    /**
+     * Returns if blade rendering is enabled or not
+     *
+     * @return bool
+     */
+    public static function isEnabled()
+    {
+        return static::$enabled;
+    }
+
+    /**
+     * Turns on the rendering via blade
+     */
+    public static function turnOn()
+    {
+        static::$enabled = true;
+    }
+
+
+    /**
+     * Turns off the rendering via blade
+     */
+    public static function turnOff()
+    {
+        static::$enabled = false;
+    }
+
+    /**
+     * Clears the cache folder
+     */
+    public static function clearCache()
+    {
+        (new \Illuminate\Filesystem\Filesystem)
+        ->deleteDirectory(static::create()->cache, true);
     }
 
     /**
@@ -137,11 +175,11 @@ class Blade
     }
 
     /**
-     * Renders a given template
+     * Returns the transpiled template into vanilla php
      *
-     * @param string  $template Path to the template
-     * @param array   $with     Additional args to pass to the tempalte
-     * @return string           Compiled template
+     * @param string $template path to the template
+     * @param array $with Additional args to pass to the template
+     * @return string Compiled template
      */
     public function view($template, $with = [])
     {
@@ -150,55 +188,6 @@ class Blade
         $html = apply_filters('wp_blade_include_html', $this->factory->render($template, $with), $template, $with);
         
         return $html;
-    }
-
-    /**
-     * Compiles a string
-     * @param  string $string A string with Blade flavored PHP
-     * @param  array  $with An array with extra data passed to the string
-     * @return string
-     */
-    public function viewString($string, $with = [])
-    {
-        $key = md5($string);
-        $blade_file = $this->view_cache . '/' . $key . '.blade.php';
-        $template = 'cache.'. $key;
-
-        if (!file_exists($blade_file)) {
-            file_put_contents($blade_file, $string);
-        }
-
-        return $this->view($template, $with);
-    }
-
-    /**
-     * Renders a given template statically
-     *
-     * @param string  $template Path to the template
-     * @param array   $with     Additional args to pass to the tempalte
-     * @return string           Compiled template
-     */
-    public static function render($template, $with = [])
-    {
-        $instance = self::instance();
-
-        return $instance->view($template, $with);
-    }
-
-
-
-    /**
-     * Renders a given template statically
-     *
-     * @param string  $template Path to the template
-     * @param array   $with     Additional args to pass to the tempalte
-     * @return string           Compiled template
-     */
-    public static function renderString($string, $with = [])
-    {
-        $instance = self::instance();
-
-        return $instance->viewString($string, $with);
     }
 
     /**
@@ -218,78 +207,30 @@ class Blade
     }
 
     /**
-     * Checks whether the view cache directory exists, and if not creates it.
-     *
-     * @return boolean
-     */
-    public function maybeCreateViewCacheDirectory()
-    {
-        if (!is_dir($this->view_cache)) {
-            if (wp_mkdir_p($this->view_cache)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Include the template
      *
      * @return string
      */
     public function blade_include($template)
     {
-        if (! $template) {
-            return $template; // Noting to do here. Come back later.
-        }
-
-        // all templates for our engine must live in the template directory
-        if (stripos($template, get_template_directory()) === false) {
+        if (!$template || !static::isEnabled() || !file_exists($template)) {
             return $template;
         }
+        
+        $compiledTemplate = $this->cache . md5($template) . '_' . str_replace('.php', '', basename($template)) . '.blade.php';
+        $bladeFileName = str_replace('.blade.php', '', basename($compiledTemplate));
 
-        $file = basename($template);
-        $view = str_replace('.php', '', $file);
-
-        if (apply_filters('wp_blade_compile_root_template', $this->viewExpired($template))) {
-            // get the base name
-            $file = basename($template);
-
-            // with a blade extension, we have to do this because blade wont recognize the root files without the .blade.php extension
-            $blade = str_replace('.php', '.blade.php', $file);
-            $blade_file = rtrim($this->view_cache, '/') . '/' . trim($blade, '/');
-
-            // get the code
-            $code = file_get_contents($template);
-
-            // add the code to the cached blade file
-            file_put_contents($blade_file, $code);
-
-            // blade friendly name
-            $view = str_replace('.php', '', $file);
-
-            // run the blade code
-            echo $this->view('cache.'. $view);
-
-            // halt including
-            return '';
+        if (!str_contains($template, '.blade.php')) {
+            if ($this->viewHasExpired($template, $compiledTemplate)) {
+                copy($template, $compiledTemplate);
+            }
         } else {
-            // get the base name
-            $file = basename($template);
-
-            // blade friendly name
-            $view = str_replace('.php', '', $file);
-
-            // run the blade code
-            echo $this->view('cache.'. $view);
-
-            // halt including
-            return '';
+            $bladeFileName = str_replace('.blade.php', '', basename($template));
         }
 
-        // return an empty string to stop wordpress from including the template when we are doing it
-        return $template;
+        echo $this->view($bladeFileName);
+
+        return '';
     }
 
     /**
@@ -298,39 +239,16 @@ class Blade
      * @param string  $path Path to the file
      * @return boolean
      */
-    protected function viewExpired($path)
+    protected function viewHasExpired($source, $cached)
     {
-    	if (defined('WP_DEBUG') && WP_DEBUG === true) {
-    		return true;
-    	}
-
-        $file = basename($path);
-
-        $blade = str_replace('.php', '.blade.php', $file);
-        $blade_file = $this->view_cache . '/' . $blade;
-
-        if (!file_exists($blade_file)) {
+        if (!file_exists($cached)) {
             return true;
         }
 
-        $lastModified = filemtime($path);
+        $sourceLastMod = filemtime($source);
+        $cacheLastMod = filemtime($cached);
 
-        return $lastModified >= filemtime($blade_file);
-    }
-
-    /**
-     * Checks if a root view exists
-     *
-     * @return boolean
-     */
-    protected function viewExists($view)
-    {
-        try {
-            $this->factory->make('cache.'. $view, [])->render();
-            return true;
-        } catch (\Exception $e) {
-            return false;
-        }
+        return $sourceLastMod >= $cacheLastMod;
     }
 
     /**
@@ -340,7 +258,7 @@ class Blade
      */
     protected function extend()
     {
-        $this->compiler()->directive('wpposts', function () {
+        $this->compiler()->directive('post', function () {
             return '<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>';
         });
 
@@ -361,26 +279,14 @@ class Blade
         });
 
         $this->compiler()->directive('acfempty', function () {
-            if (function_exists('get_field')) {
-                return '';
-            }
-
             return '<?php endwhile; ?><?php else: ?>';
         });
 
         $this->compiler()->directive('acfend', function () {
-            if (function_exists('get_field')) {
-                return '';
-            }
-
             return '<?php endif; ?>';
         });
 
         $this->compiler()->directive('acf', function ($expression) {
-            if (function_exists('get_field')) {
-                return '';
-            }
-
             $php = '<?php if ( have_rows'.$expression.' ) : ';
             $php .= 'while ( have_rows'.$expression.' ) : the_row(); ?>';
 
@@ -388,10 +294,6 @@ class Blade
         });
 
         $this->compiler()->directive('acffield', function ($expression) {
-            if (function_exists('get_field')) {
-                return '';
-            }
-
             $php = '<?php if ( get_field'.$expression.' ) : ';
             $php .= 'the_field'.$expression.'; endif; ?>';
 
@@ -399,39 +301,16 @@ class Blade
         });
 
         $this->compiler()->directive('acfhas', function ($expression) {
-            if (function_exists('get_field')) {
-                return '';
-            }
-
             $php = '<?php if ( $field = get_field'.$expression.' ) : ';
             
             return $php;
         });
 
         $this->compiler()->directive('acfsub', function ($expression) {
-            if (function_exists('get_field')) {
-                return '';
-            }
-            
             $php = '<?php if ( get_sub_field'.$expression.' ) : ';
             $php .= 'the_sub_field'.$expression.'; endif; ?>';
             
             return $php;
-        });
-
-        /**
-         * Just some handy directives
-         */
-
-        $this->compiler()->directive('var', function ($expression) {
-            $expression = substr($expression, 1, -1);
-            $segments = explode(',', $expression, 2);
-            $segments = array_map('trim', $segments);
-
-            $key = substr($segments[0], 1, -1);
-            $value = $segments[1];
-
-            return '<?php $'.$key.' = apply_filters(\'wp_blade_variable_sanitize\', '. $value .'); ?>';
         });
 
         do_action('wp_blade_add_directive', $this->factory->compiler());
