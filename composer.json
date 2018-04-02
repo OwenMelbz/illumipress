@@ -6,11 +6,7 @@
         "illuminate/http": "5.*",
         "illuminate/validation": "5.*",
         "kitetail/zttp": "^0.3.0",
-        "ekandreas/bladerunner": "1.7.4",
-        "illuminate/config": "5.*",
-        "illuminate/view": "5.*",
-        "symfony/yaml": "^3.0",
-        "brain/hierarchy": "^2.0"
+        "illuminate/view": "5.*"
     },
     "license": "MIT",
     "authors": [
@@ -19,24 +15,12 @@
             "email": "owenmelbz@gmail.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "ekandreas/bladerunner",
-                "version": "1.7.4",
-                "dist": {
-                    "url": "https://github.com/ekandreas/bladerunner/archive/1.7.4.zip",
-                    "type": "zip"
-                }
-            }
-        }
-    ],
     "autoload": {
         "files": [
             "./src/Validator.php",
             "./src/Response.php",
             "./src/Request.php",
+            "./src/BladeFactory.php",
             "./src/Blade.php",
             "./src/helpers.php"
         ]
