@@ -22,7 +22,7 @@ As the illuminate packages require the illuminate/support package, you also get 
 - string helpers e.g `ends_with`, `starts_with`, `str_contains`, `str_random`
 - logical helpers such as `optional`, `tap`, `throw_if`
 - access to Guzzle via `kitetail\zttp` and a `http()` helper
-- laravel blade template rendering using `filename.blade.php`
+- laravel blade template rendering using `filename.blade.php` allowing `view('component.sidebar')` etc
 
 You can see a full list of included components https://github.com/illuminate/support
 
