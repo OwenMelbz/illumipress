@@ -1,3 +1,5 @@
+![IllumiPress logo](https://svgshare.com/i/64q.svg)
+
 # IllumiPress
 
 IllumiPress is a simple wrapper for the laravel 5 illuminate support, http request, response, validator and blade allowing it to be easily imported into any PHP 7+ project.
