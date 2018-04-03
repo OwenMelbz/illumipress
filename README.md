@@ -119,7 +119,7 @@ $validator = validator($data, $rules);
 $validator->setLanguageFile(__DIR__ . '/i18n/french.php');
 ```
 
-## Laravel Blade (beta)
+## Laravel Blade
 
 Blade has also been included to allow a more fluent syntax for rendering templates.
 
@@ -129,7 +129,7 @@ If you name your files `template.blade.php` blade can render the template direct
 
 The integration is loosely based off https://github.com/tormjens/wp-blade which means you get some starter directives such as, `@post, @wpquery() @acf @acfhas @acffield @acfsub`
 
-It is still in "beta" at the moment as needs tests written for it, and needs several more methods adding, for rendering includes, partials, stacks etc, but that will come soon.
+You can return a rendered view by using the `view('components.sidebar')` helper
 
 ## HTTP Client / Guzzle / cURL / zttp
 
