@@ -93,6 +93,16 @@ class BladeFactory
     }
 
     /**
+     * Get the blade instance
+     *
+     * @return mixed
+     */
+    public function api()
+    {
+        return $this->container['view'];
+    }
+
+    /**
      * Pass any method to the view factory instance.
      *
      * @param  string $method

@@ -90,6 +90,23 @@ if (! function_exists('dump')) {
     }
 }
 
+if (! function_exists('view')) {
+    /**
+     * Returns a rendered blade template
+     */
+    function view($template, $with = [])
+    {
+        $blade = \OwenMelbz\IllumiPress\Blade::instance();
+        $html = '';
+
+        if ($path = $blade->resolveTemplatePath($template)) {
+            $html = $blade->blade_include($path, $with, true);
+        }
+
+        return $html ?: 'View not found';
+    }
+}
+
 if (! function_exists('turn_blade_off')) {
     /**
      * Prevents passing of templates to blade

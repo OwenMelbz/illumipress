@@ -195,7 +195,7 @@ class Blade
      *
      * @return boolean
      */
-    public function maybeCreateCacheDirectory()
+    protected function maybeCreateCacheDirectory()
     {
         if (!is_dir($this->cache)) {
             if (wp_mkdir_p($this->cache)) {
@@ -211,9 +211,9 @@ class Blade
      *
      * @return string
      */
-    public function blade_include($template)
+    public function blade_include($template, $with = [], $return = false)
     {
-        if (!$template || !static::isEnabled() || !file_exists($template)) {
+        if (!$template || !static::isEnabled()) {
             return $template;
         }
         
@@ -228,7 +228,11 @@ class Blade
             $bladeFileName = str_replace('.blade.php', '', basename($template));
         }
 
-        echo $this->view($bladeFileName);
+        if ($return) {
+            return $this->view($bladeFileName, $with);
+        }
+
+        echo $this->view($bladeFileName, $with);
 
         return '';
     }
@@ -249,6 +253,29 @@ class Blade
         $cacheLastMod = filemtime($cached);
 
         return $sourceLastMod >= $cacheLastMod;
+    }
+
+    /**
+     * Returns the fully qualified file path of
+     * a template name passed in.
+     *
+     * @param string $name template name
+     * @return string $path Path to the file
+     */
+    public function resolveTemplatePath($name)
+    {
+        $basename = basename($name);
+        $basename = str_replace(['.blade.php', '.php'], '', $basename);
+
+        if ($this->factory->exists($basename)) {
+            $filename = $this->factory->api()->getFinder()->find($basename);
+            $filename = str_replace('//', '/', $filename);
+            $filename = str_replace('\\\\', '\\', $filename);
+            
+            return $filename;
+        }
+
+        return null;
     }
 
     /**
