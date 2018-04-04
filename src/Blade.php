@@ -27,7 +27,7 @@ class Blade
     /**
      * View factory
      *
-     * @var OwenMelbz\IllumiPress\BladeFactory
+     * @var BladeFactory
      */
     protected $factory;
 
@@ -47,6 +47,7 @@ class Blade
 
     /**
      * Set up hooks and initialize Blade
+     * @param bool $actions
      */
     public function __construct($actions = true)
     {
@@ -109,7 +110,7 @@ class Blade
      */
     public static function turnOn()
     {
-        static::$enabled = true;
+        return static::$enabled = true;
     }
 
 
@@ -118,7 +119,7 @@ class Blade
      */
     public static function turnOff()
     {
-        static::$enabled = false;
+        return static::$enabled = false;
     }
 
     /**
@@ -126,8 +127,7 @@ class Blade
      */
     public static function clearCache()
     {
-        (new \Illuminate\Filesystem\Filesystem)
-        ->deleteDirectory(static::create()->cache, true);
+        return (new Filesystem)->deleteDirectory(static::create()->cache, true);
     }
 
     /**
@@ -137,7 +137,7 @@ class Blade
      *
      * @since 1.0
      * @static
-     * @return OwenMelbz\IllumiPress\Blade
+     * @return Blade
      */
     public static function instance()
     {
@@ -209,6 +209,9 @@ class Blade
     /**
      * Include the template
      *
+     * @param $template
+     * @param array $with
+     * @param bool $return
      * @return string
      */
     public function blade_include($template, $with = [], $return = false)
@@ -240,7 +243,8 @@ class Blade
     /**
      * Checks if the view was changed after we stored it for caching
      *
-     * @param string  $path Path to the file
+     * @param $source
+     * @param $cached
      * @return boolean
      */
     protected function viewHasExpired($source, $cached)

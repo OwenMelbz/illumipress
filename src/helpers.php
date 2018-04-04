@@ -50,6 +50,7 @@ if (! function_exists('validator')) {
      * @param array $data
      * @param array $rules
      * @param array $messages
+     * @param array $customAttributes
      * @return \OwenMelbz\IllumiPress\Validator
      */
     function validator(array $data = [], array $rules = [], array $messages = [], array $customAttributes = [])
@@ -93,6 +94,9 @@ if (! function_exists('dump')) {
 if (! function_exists('view')) {
     /**
      * Returns a rendered blade template
+     * @param $template
+     * @param array $with
+     * @return string
      */
     function view($template, $with = [])
     {
@@ -113,7 +117,7 @@ if (! function_exists('turn_blade_off')) {
      */
     function turn_blade_off()
     {
-        \OwenMelbz\IllumiPress\Blade::turnOff();
+        return \OwenMelbz\IllumiPress\Blade::turnOff();
     }
 }
 
@@ -123,7 +127,7 @@ if (! function_exists('turn_blade_on')) {
      */
     function turn_blade_on()
     {
-        \OwenMelbz\IllumiPress\Blade::turnOn();
+        return \OwenMelbz\IllumiPress\Blade::turnOn();
     }
 }
 
@@ -133,6 +137,6 @@ if (! function_exists('clear_blade_cache')) {
      */
     function clear_blade_cache()
     {
-        \OwenMelbz\IllumiPress\Blade::clearCache();
+        return \OwenMelbz\IllumiPress\Blade::clearCache();
     }
 }

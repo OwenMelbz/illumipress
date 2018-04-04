@@ -2,13 +2,13 @@
 
 namespace OwenMelbz\IllumiPress;
 
-use \Illuminate\Http\Response as IlluminateResponce;
+use \Illuminate\Http\Response as IlluminateResponse;
 
 /**
  * Class Response
  * @package OwenMelbz\IllumiPress
  */
-class Response extends IlluminateResponce
+class Response extends IlluminateResponse
 {
 
     /**
@@ -26,7 +26,7 @@ class Response extends IlluminateResponce
      *
      * @param int|null $status
      * @param bool $return
-     * @return $this
+     * @return Response|void
      */
     private function ajaxTransform(int $status = null, bool $return = false)
     {

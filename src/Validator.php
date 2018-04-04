@@ -35,6 +35,7 @@ class Validator
      * @param array $data
      * @param array $rules
      * @param array $messageArray
+     * @param array $customAttributes
      */
     public function __construct(array $data = [], array $rules = [], array $messageArray = [], array $customAttributes = [])
     {
@@ -54,7 +55,7 @@ class Validator
     /**
      * Accepts a file path which loads in language strings for error message replacement
      *
-     * @param $file
+     * @param $filePath
      * @return $this
      * @throws Exception
      */
@@ -74,6 +75,7 @@ class Validator
     /**
      * Returns a consistent format for errors which can be used on most frontend clients
      *
+     * @param array|null $messages
      * @return array
      */
     public function formattedErrors(array $messages = null)

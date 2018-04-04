@@ -28,9 +28,9 @@ class BladeFactory
     /**
      * Constructor.
      *
-     * @param array     $viewPaths
-     * @param string    $cachePath
-     * @param Container $container
+     * @param array $viewPaths
+     * @param string $cachePath
+     * @param ContainerInterface $container
      */
     public function __construct($viewPaths, $cachePath, ContainerInterface $container = null)
     {
