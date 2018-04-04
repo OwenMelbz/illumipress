@@ -10,7 +10,7 @@ We currently integrate WordPress with Laravel Blade, HTTP Requests, Responses, V
 
 The easiest way to install is via composer e.g `composer require owenmelbz/illumipress` from within your project root.
 
-Even if your project is not using composer you can use the above command, but then you must manually include `vendor/autoload.php` in your project, for wordpress consider using the `functions.php`
+Even if your project is not using composer you can use the above command, but then you must manually include `vendor/autoload.php` in your project, for WordPress consider using the `functions.php`
 
 ## Features
 
@@ -36,7 +36,7 @@ This does not currently have any custom functionality, you should be able to use
 
 ## Response Class
 
-The main difference between the laravel and this implimentation is that typically you must manually use symfonys "send()" method to complete the request e.g.
+The main difference between the Laravel and this implementation is that typically you must manually use Symfony's "send()" method to complete the request e.g.
 
 ```
 return response(['hello' => 'world'])->send();
@@ -49,13 +49,13 @@ There are however custom helpers on top to provide a consistent ajax style respo
 // Sends a JSON response formatted into a JSONSchema'esque structure
 
 return response([
-	'hello' => 'world'
+    'hello' => 'world'
 ])->ajax();
 
 // Returns 200 header
 {
-	"data": {"hello": "world"},
-	"meta": {"success": true}
+    "data": {"hello": "world"},
+    "meta": {"success": true}
 }
 
 // You can also send a JSON response with error headers
@@ -64,8 +64,8 @@ return response('Sorry something went wrong')->error(422);
 
 // Returns a 422 error
 {
-	"data": "Sorry something went wrong",
-	"meta": {"success": false}
+    "data": "Sorry something went wrong",
+    "meta": {"success": false}
 }
 ```
 
@@ -81,36 +81,36 @@ You can completely overwrite the meta using `setMeta` method.
 
 This provides 2 extra methods on top of the validation class, firstly the ability to return a formatted list of errors using `$validator->formattedErrors()` and an ajax result using the previously mentioned automatic formatting by `$validator->response()`.
 
-You have the the full validation class (https://laravel.com/docs/5.6/validation) under there to use such as
+You have the full validation class (https://laravel.com/docs/5.6/validation) under there to use such as
 
 ```
 $validator = validator(request()->all(), [
-	'name' => 'required',
-	'email' => 'required|email'
+    'name' => 'required',
+    'email' => 'required|email'
 ]);
 
 if ($validator->fails()) {
-	return $validator->response();
+    return $validator->response();
 }
 
 // Outputs
 {
-	"data": [
-		{
-			"param": "name",
-			"messages": [
-				"the name field is required",
-			]
-		}
-	],
-	"meta": {
-		"success": false
-	}
+    "data": [
+        {
+            "param": "name",
+            "messages": [
+                "the name field is required",
+            ]
+        }
+    ],
+    "meta": {
+        "success": false
+    }
 }
 
 ```
 
-By default we only include the default laravel i18n error messages, you can follow the laravel documentation for passing in custom messages https://laravel.com/docs/5.6/validation#custom-error-messages
+By default we only include the default Laravel i18n error messages, you can follow the Laravel documentation for passing in custom messages https://laravel.com/docs/5.6/validation#custom-error-messages
 
 If you need to use translations you can load your custom messages file e.g
 
@@ -125,7 +125,7 @@ Blade has also been included to allow a more fluent syntax for rendering templat
 
 By default it is enabled - however you can turn it off by using `turn_blade_off()` and `turn_blade_on()`
 
-If you name your files `template.blade.php` blade can render the template directly, however if you enable blade and have normal `template.php` files, it will create a dynamic copy within the `wp-content/uploads/.cache/` which will update each time you make a file change.
+If you name your files `template.blade.php` Blade can render the template directly, however, if you enable blade and have normal `template.php` files, it will create a dynamic copy within the `wp-content/uploads/.cache/` which will update each time you make a file change.
 
 The integration is loosely based off https://github.com/tormjens/wp-blade which means you get some starter directives such as, `@post, @wpquery() @acf @acfhas @acffield @acfsub`
 
@@ -133,7 +133,7 @@ You can return a rendered view by using the `view('components.sidebar')` helper
 
 ## HTTP Client / Guzzle / cURL / zttp
 
-We also include the `kitetail/zttp` library for a simple curl access via the `http()` helper, for full information we recommend checking out the zttp github documentation
+We also include the `kitetail/zttp` library for a simple curl access via the `http()` helper, for full information we recommend checking out the zttp GitHub documentation
 
 ```
 $stringResponse = http('https:/www.google.com');
@@ -155,8 +155,5 @@ if ($response->isOkay()) {
 As `zttp` uses Guzzle under the hood, which means you can also get access to the full guzzle suite and do things such as `(new Guzzle\Client)->setBaseUri('https://www.google.com/')->post('search', ['q' => 'query''])`;
 
 ## License
-This is a completely free and open source project, feel free to use it for anything you like, if you wish to modify and redistribute it however, please give some credit back to the original repository.
-
-
-
+This is a completely free and open source project, feel free to use it for anything you like, if you wish to modify and redistribute it, however, please give some credit back to the original repository.
 
