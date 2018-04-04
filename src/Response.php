@@ -50,9 +50,12 @@ class Response extends IlluminateResponse
         $this->setContent($content);
 
         if ($return) {
+            /** @noinspection PhpInconsistentReturnPointsInspection */
             return $this;
         }
 
+        /** @noinspection PhpInconsistentReturnPointsInspection */
+        /** @noinspection PhpVoidFunctionResultUsedInspection */
         return $this->send();
     }
 

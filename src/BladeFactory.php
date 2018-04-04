@@ -8,6 +8,10 @@ use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\View\ViewServiceProvider;
 
+/**
+ * Class BladeFactory
+ * @package OwenMelbz\IllumiPress
+ */
 class BladeFactory
 {
 
@@ -25,8 +29,14 @@ class BladeFactory
      */
     protected $engineResolver;
 
+    /**
+     * @var array
+     */
     protected $viewPaths = [];
 
+    /**
+     * @var string
+     */
     protected $cachePath;
 
     /**
@@ -38,11 +48,16 @@ class BladeFactory
      */
     public function __construct(array $viewPaths, string $cachePath, ContainerInterface $container = null)
     {
+        $this->viewPaths = $viewPaths;
+        $this->cachePath = $cachePath;
         $this->container = $container ?: new Container;
 
         $this->setupContainer();
 
-        (new ViewServiceProvider($this->container))->register();
+        /** @noinspection PhpParamsInspection */
+        (new ViewServiceProvider(
+            $this->container
+        ))->register();
 
         $this->engineResolver = $this->container->make('view.engine.resolver');
     }
