@@ -2,11 +2,9 @@
 
 # IllumiPress
 
-IllumiPress is a simple wrapper for the laravel 5 illuminate support, http request, response, validator and blade allowing it to be easily imported into any PHP 7+ project.
+IllumiPress is a simple wrapper for some of the laravel 5 illuminate packages, it allows users to integrate some of the joyful features of Laravel into wordpress.
 
-Initially designed to bring illuminate support to wordpress, which is how we get IllumiPress.
-
-There is no WordPress specific code within the project, meaning this can be used for any PHP project.
+We currently integrate WordPress with Laravel Blade, HTTP Requests, Responses, Validator and Support (e.g collections, dd, string helpers etc)
 
 ## Installation 
 
