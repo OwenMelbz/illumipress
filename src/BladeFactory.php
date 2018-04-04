@@ -25,6 +25,10 @@ class BladeFactory
      */
     protected $engineResolver;
 
+    protected $viewPaths = [];
+
+    protected $cachePath;
+
     /**
      * Constructor.
      *
@@ -32,10 +36,8 @@ class BladeFactory
      * @param string $cachePath
      * @param ContainerInterface $container
      */
-    public function __construct($viewPaths, $cachePath, ContainerInterface $container = null)
+    public function __construct(array $viewPaths, string $cachePath, ContainerInterface $container = null)
     {
-        $this->viewPaths = $viewPaths;
-        $this->cachePath = $cachePath;
         $this->container = $container ?: new Container;
 
         $this->setupContainer();

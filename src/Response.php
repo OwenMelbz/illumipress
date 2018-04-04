@@ -26,7 +26,7 @@ class Response extends IlluminateResponse
      *
      * @param int|null $status
      * @param bool $return
-     * @return Response|void
+     * @return void|Response
      */
     private function ajaxTransform(int $status = null, bool $return = false)
     {
@@ -140,6 +140,6 @@ class Response extends IlluminateResponse
     public function send()
     {
         parent::send();
-        die();
+        exit;
     }
 }

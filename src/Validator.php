@@ -65,6 +65,7 @@ class Validator
             throw new Exception('Language file does not exist');
         }
 
+        /** @noinspection PhpIncludeInspection */
         $this->messages = include $filePath;
 
         $this->validator->setCustomMessages($this->messages);
