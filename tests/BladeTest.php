@@ -1,56 +1,37 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use OwenMelbz\IllumiPress\Response;
+use OwenMelbz\IllumiPress\Blade;
 
 class BladeTest extends TestCase
 {
-
-    public function test__construct()
-    {
-    }
-
     public function testIsEnabled()
     {
-    }
+        turn_blade_on();
+        $bladeState = Blade::isEnabled();
 
-    public function testTurnOn()
-    {
+        $this->assertTrue($bladeState);
     }
 
     public function testTurnOff()
     {
+        $bladeState = turn_blade_off();
+
+        $this->assertFalse($bladeState);
+        $this->assertFalse(Blade::isEnabled());
     }
 
-    public function testClearCache()
+    public function testTurnOn()
     {
+        $bladeState = turn_blade_on();
+
+        $this->assertTrue($bladeState);
+        $this->assertTrue(Blade::isEnabled());
     }
 
-    public function testInstance()
+    public function testIwishItCouldBootWordPress()
     {
+        $this->assertInternalType('string', 'One day, maybe we can boot up wordpress, or replace certain helpers with mocks');
     }
 
-    public function testCreate()
-    {
-    }
-
-    public function testCompiler()
-    {
-    }
-
-    public function testFactory()
-    {
-    }
-
-    public function testView()
-    {
-    }
-
-    public function testMaybeCreateCacheDirectory()
-    {
-    }
-
-    public function testBlade_include()
-    {
-    }
 }

@@ -27,5 +27,14 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^7.0"
+    },
+    "scripts": {
+        "checks": [
+          "find . -name '*.orig' -delete",
+          "phpcbf ./src --standard=PSR2",
+          "php7cc ./src",
+          "phpunit",
+          "git status"
+        ]
     }
 }
