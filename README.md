@@ -123,7 +123,7 @@ $validator->setLanguageFile(__DIR__ . '/i18n/french.php');
 
 Blade has also been included to allow a more fluent syntax for rendering templates.
 
-By default it is enabled - however you can turn it off by using `turn_blade_off()` and `turn_blade_on()`
+By default it is disabled - however you can turn it on by using `turn_blade_on()` and to turn off using `turn_blade_off()`
 
 If you name your files `template.blade.php` Blade can render the template directly, however, if you enable blade and have normal `template.php` files, it will create a dynamic copy within the `wp-content/uploads/.cache/` which will update each time you make a file change.
 

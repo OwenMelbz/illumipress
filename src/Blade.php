@@ -107,10 +107,14 @@ class Blade
 
     /**
      * Turns on the rendering via blade
+     * 
+     * @return Blade
      */
     public static function turnOn()
     {
-        return static::$enabled = true;
+        static::$enabled = true;
+
+        return static::create();
     }
 
 
