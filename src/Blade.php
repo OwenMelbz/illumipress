@@ -87,7 +87,7 @@ class Blade
 
         // extend the compiler
         $this->extend();
-        
+
         if ($actions && static::isEnabled()) {
             add_action('template_include', array($this, 'blade_include'));
         }
@@ -107,7 +107,7 @@ class Blade
 
     /**
      * Turns on the rendering via blade
-     * 
+     *
      * @return Blade
      */
     public static function turnOn()
@@ -190,7 +190,7 @@ class Blade
         $template = apply_filters('wp_blade_include_template', $template, $with);
         $with = apply_filters('wp_blade_include_arguments', $with, $template);
         $html = apply_filters('wp_blade_include_html', $this->factory->render($template, $with), $template, $with);
-        
+
         return $html;
     }
 
@@ -223,13 +223,16 @@ class Blade
         if (!$template || !static::isEnabled()) {
             return $template;
         }
-        
+
         $compiledTemplate = $this->cache . md5($template) . '_' . str_replace('.php', '', basename($template)) . '.blade.php';
         $bladeFileName = str_replace('.blade.php', '', basename($compiledTemplate));
 
         if (!str_contains($template, '.blade.php')) {
             if ($this->viewHasExpired($template, $compiledTemplate)) {
-                copy($template, $compiledTemplate);
+                $templateContent = file_get_contents($template);
+                $templateContent = str_replace('get_header()', "echo view('header')", $templateContent);
+                $templateContent = str_replace('get_footer()', "echo view('footer')", $templateContent);
+                file_put_contents($compiledTemplate, $templateContent);
             }
         } else {
             $bladeFileName = str_replace('.blade.php', '', basename($template));
@@ -279,7 +282,7 @@ class Blade
             $filename = $this->factory->api()->getFinder()->find($basename);
             $filename = str_replace('//', '/', $filename);
             $filename = str_replace('\\\\', '\\', $filename);
-            
+
             return $filename;
         }
 
@@ -337,14 +340,14 @@ class Blade
 
         $this->compiler()->directive('acfhas', function ($expression) {
             $php = '<?php if ( $field = get_field'.$expression.' ) : ';
-            
+
             return $php;
         });
 
         $this->compiler()->directive('acfsub', function ($expression) {
             $php = '<?php if ( get_sub_field'.$expression.' ) : ';
             $php .= 'the_sub_field'.$expression.'; endif; ?>';
-            
+
             return $php;
         });
 
