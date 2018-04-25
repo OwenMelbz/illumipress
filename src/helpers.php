@@ -96,7 +96,7 @@ if (! function_exists('cache')) {
      * Returns an instance of the cache class
      *
      * @param string $driver - either redis, file or memcached
-     * @return \Illuminate\Cache\Cache
+     * @return \OwenMelbz\IllumiPress\Cache|\Illuminate\Cache\Cache
      */
     function cache($driver = 'file')
     {
@@ -108,8 +108,8 @@ if (! function_exists('encryption')) {
     /**
      * Returns an instance of the encryption class
      *
-     * @param string $driver - either redis, file or memencryptiond
-     * @return \Illuminate\Encryption\Encrypter
+     * @param string $key - a 16 character encryption key normally APP_KEY
+     * @return OwenMelbz\IllumiPress\Encryption|\Illuminate\Encryption\Encrypter
      */
     function encryption($key = null)
     {

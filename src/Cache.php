@@ -14,14 +14,25 @@ use Illuminate\Filesystem\Filesystem;
 class Cache
 {
 
+    /**
+     * @var array
+     */
     protected static $stores = [
         'file' => null,
         'redis' => null,
         'memcached' => null,
     ];
 
+    /**
+     * @var \Illuminate\Contracts\Cache\Repository
+     */
     protected static $lastAccessedStore;
 
+    /**
+     * Cache constructor.
+     * @param string $driver
+     * @return \OwenMelbz\IllumiPress\Cache
+     */
     public function __construct($driver = 'file')
     {
 
@@ -36,6 +47,9 @@ class Cache
         return static::$stores[$driver];
     }
 
+    /**
+     * @return \Illuminate\Contracts\Cache\Repository
+     */
     private function setupFileDriver()
     {
         $container = new Container;
@@ -55,6 +69,9 @@ class Cache
         return $cacheManager->store();
     }
 
+    /**
+     * @return \Illuminate\Contracts\Cache\Repository
+     */
     private function setupRedisDriver()
     {
         $container = new Container;
@@ -83,6 +100,9 @@ class Cache
         return $cacheManager->store();
     }
 
+    /**
+     * @return \Illuminate\Contracts\Cache\Repository
+     */
     private function setupMemcachedDriver()
     {
         $container = new Container;
@@ -110,7 +130,7 @@ class Cache
     }
 
     /**
-     * Allows you to easily call any underlying validator methods
+     * Allows you to easily call any underlying cache methods
      *
      * @param $method
      * @param $args

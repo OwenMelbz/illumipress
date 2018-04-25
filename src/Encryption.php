@@ -12,8 +12,16 @@ use Illuminate\Encryption\Encrypter;
 class Encryption
 {
 
+    /**
+     * @var \Illuminate\Encryption\Encrypter
+     */
     protected static $encrypter;
 
+    /**
+     * Encryption constructor.
+     * @param null $encryptionKey
+     * @throws Exception
+     */
     public function __construct($encryptionKey = null)
     {
         if (defined('ILLUMINATE_ENCRYPTION_KEY')) {

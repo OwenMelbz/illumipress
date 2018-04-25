@@ -12,8 +12,14 @@ use Whoops\Handler\PrettyPageHandler;
 class WhoopsFactory
 {
 
+    /**
+     * @var \Whoops\Run
+     */
     protected static $whoops;
 
+    /**
+     * @return \Whoops\Run
+     */
     public static function turnOn()
     {
         if (!static::$whoops) {
@@ -26,6 +32,9 @@ class WhoopsFactory
         return static::$whoops;
     }
 
+    /**
+     * @return \Whoops\Run
+     */
     public static function turnOff()
     {
         static::$whoops->unregister();
