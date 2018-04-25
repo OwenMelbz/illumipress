@@ -15,9 +15,9 @@ class Cache
 {
 
     protected static $stores = [
-    	'file' => null,
-    	'redis' => null,
-    	'memcached' => null,
+        'file' => null,
+        'redis' => null,
+        'memcached' => null,
     ];
 
     protected static $lastAccessedStore;
