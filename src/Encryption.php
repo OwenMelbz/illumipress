@@ -28,13 +28,13 @@ class Encryption
             throw new Exception('ILLUMINATE_ENCRYPTION_KEY must be only 16-characters long');
         }
 
-        static::$encrypter = new Encryptor($key);
+        static::$encrypter = new Encrypter($key);
 
         return static::$encrypter;
     }
 
     /**
-     * Allows you to easily call any underlying encryption methods
+     * Allows you to easily call any underlying validator methods
      *
      * @param $method
      * @param $args
