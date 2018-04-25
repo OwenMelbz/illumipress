@@ -34,7 +34,7 @@ class Encryption
     }
 
     /**
-     * Allows you to easily call any underlying validator methods
+     * Allows you to easily call any underlying encryption methods
      *
      * @param $method
      * @param $args
@@ -42,6 +42,6 @@ class Encryption
      */
     public function __call($method, $args)
     {
-        return call_user_func_array([static::$stores[static::$lastAccessedStore], $method], $args);
+        return call_user_func_array([static::$encrypter, $method], $args);
     }
 }

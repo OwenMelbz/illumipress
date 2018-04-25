@@ -110,7 +110,7 @@ class Cache
     }
 
     /**
-     * Allows you to easily call any underlying validator methods
+     * Allows you to easily call any underlying cache methods
      *
      * @param $method
      * @param $args
