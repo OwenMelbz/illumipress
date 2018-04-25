@@ -166,3 +166,26 @@ if (! function_exists('clear_blade_cache')) {
         return \OwenMelbz\IllumiPress\Blade::clearCache();
     }
 }
+
+if (! function_exists('turn_whoops_on')) {
+    /**
+     * Enables whoops error handling
+     */
+    function turn_whoops_on()
+    {
+        return \OwenMelbz\IllumiPress\Whoops::turnOn();
+    }
+}
+
+if (! function_exists('turn_whoops_off')) {
+    /**
+     * Disabled whoops error handling
+     */
+    function turn_whoops_off()
+    {
+        return \OwenMelbz\IllumiPress\Whoops::turnOff();
+    }
+}
+
+turn_whoops_on();
+//turn_whoops_off();
