@@ -27,7 +27,7 @@
             "./src/Blade.php",
             "./src/Cache.php",
             "./src/Encryption.php",
-            "./src/Whoops.php",
+            "./src/WhoopsFactory.php",
             "./src/helpers.php"
         ]
     },

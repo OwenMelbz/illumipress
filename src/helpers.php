@@ -173,7 +173,7 @@ if (! function_exists('turn_whoops_on')) {
      */
     function turn_whoops_on()
     {
-        return \OwenMelbz\IllumiPress\Whoops::turnOn();
+        return \OwenMelbz\IllumiPress\WhoopsFactory::turnOn();
     }
 }
 
@@ -183,9 +183,8 @@ if (! function_exists('turn_whoops_off')) {
      */
     function turn_whoops_off()
     {
-        return \OwenMelbz\IllumiPress\Whoops::turnOff();
+        return \OwenMelbz\IllumiPress\WhoopsFactory::turnOff();
     }
 }
 
-turn_whoops_on();
-//turn_whoops_off();
+turn_whoops_on(); // You can of course turn this off.

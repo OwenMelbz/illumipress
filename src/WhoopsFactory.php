@@ -6,10 +6,10 @@ use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;
 
 /**
- * Class Whoops
+ * Class WhoopsFactory
  * @package OwenMelbz\IllumiPress
  */
-class WhoopsManager
+class WhoopsFactory
 {
 
     protected static $whoops;
