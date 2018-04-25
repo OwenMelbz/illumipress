@@ -93,14 +93,27 @@ if (! function_exists('dump')) {
 
 if (! function_exists('cache')) {
     /**
-     * Dump the passed variables
+     * Returns an instance of the cache class
      *
-     * @param mixed $args
-     * @return void
+     * @param string $driver - either redis, file or memcached
+     * @return \Illuminate\Cache\Cache
      */
     function cache($driver = 'file')
     {
         return new \OwenMelbz\IllumiPress\Cache($driver);
+    }
+}
+
+if (! function_exists('encryption')) {
+    /**
+     * Returns an instance of the encryption class
+     *
+     * @param string $driver - either redis, file or memencryptiond
+     * @return \Illuminate\Encryption\Encrypter
+     */
+    function encryption($key = null)
+    {
+        return new \OwenMelbz\IllumiPress\Encryption($key);
     }
 }
 
