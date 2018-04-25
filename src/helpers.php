@@ -91,6 +91,19 @@ if (! function_exists('dump')) {
     }
 }
 
+if (! function_exists('cache')) {
+    /**
+     * Dump the passed variables
+     *
+     * @param mixed $args
+     * @return void
+     */
+    function cache()
+    {
+        return new \OwenMelbz\IllumiPress\Cache;
+    }
+}
+
 if (! function_exists('view')) {
     /**
      * Returns a rendered blade template

@@ -6,7 +6,8 @@
         "illuminate/http": "5.*",
         "illuminate/validation": "5.*",
         "kitetail/zttp": "^0.3.0",
-        "illuminate/view": "5.*"
+        "illuminate/view": "5.*",
+        "illuminate/cache": "5.*"
     },
     "license": "MIT",
     "authors": [
@@ -22,6 +23,7 @@
             "./src/Request.php",
             "./src/BladeFactory.php",
             "./src/Blade.php",
+            "./src/Cache.php",
             "./src/helpers.php"
         ]
     },

@@ -66,8 +66,8 @@ class Blade
         $cacheDirectory = trailingslashit(
             apply_filters(
                 'wp_blade_cache_directory',
-                defined('BLADE_CACHE') ?
-                BLADE_CACHE : trailingslashit(wp_upload_dir()['basedir']) . '.cache'
+                defined('ILLUMINATE_CACHE') ?
+                ILLUMINATE_CACHE : trailingslashit(wp_upload_dir()['basedir']) . '.cache'
             )
         );
 
