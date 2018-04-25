@@ -14,23 +14,26 @@ use Illuminate\Filesystem\Filesystem;
 class Cache
 {
 
-    protected static $fileDriver;
+    protected static $stores = [
+    	'file' => null,
+    	'redis' => null,
+    	'memcached' => null,
+    ];
 
-    protected static $redisDriver;
-
-    protected static $memcachedDriver;
+    protected static $lastAccessedStore;
 
     public function __construct($driver = 'file')
     {
 
-        $storeName = $driver . 'Driver';
         $setupName = 'setup' . ucfirst($driver) . 'Driver';
 
-        if (!static::$$storeName) {
-            $this->$setupName();
+        if (!static::$stores[$driver]) {
+            static::$stores[$driver] = $this->$setupName();
         }
 
-        return static::$$storeName;
+        static::$lastAccessedStore = $driver;
+
+        return static::$stores[$driver];
     }
 
     private function setupFileDriver()
@@ -49,7 +52,7 @@ class Cache
 
         $cacheManager = new CacheManager($container);
 
-        static::$fileDriver = $cacheManager->store();
+        return $cacheManager->store();
     }
 
     private function setupRedisDriver()
@@ -77,7 +80,7 @@ class Cache
 
         $cacheManager = new CacheManager($container);
 
-        static::$redisDriver = $cacheManager->store();
+        return $cacheManager->store();
     }
 
     private function setupMemcachedDriver()
@@ -103,7 +106,7 @@ class Cache
 
         $cacheManager = new CacheManager($container);
 
-        static::$redisDriver = $cacheManager->store();
+        return $cacheManager->store();
     }
 
     /**
@@ -115,6 +118,6 @@ class Cache
      */
     public function __call($method, $args)
     {
-        return call_user_func_array([static::$store, $method], $args);
+        return call_user_func_array([static::$stores[static::$lastAccessedStore], $method], $args);
     }
 }
