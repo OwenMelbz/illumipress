@@ -2,6 +2,7 @@
 
 namespace OwenMelbz\IllumiPress;
 
+use Illuminate\Redis\Database;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Container\Container;
 use Illuminate\Filesystem\Filesystem;
@@ -13,37 +14,99 @@ use Illuminate\Filesystem\Filesystem;
 class Cache
 {
 
-	protected static $store;
+    protected static $fileDriver;
 
-	public function __construct()
-	{
-		if (!static::$store) {
-			$this->setupFileDriver();
-		}
+    protected static $redisDriver;
 
-		return static::$store;
-	}
+    protected static $memcachedDriver;
 
-	private function setupFileDriver()
-	{
-		$container = new Container;
+    public function __construct($driver = 'file')
+    {
 
-		$container['config'] = [
-			'cache.default' => 'file',
-			'cache.stores.file' => [
-				'driver' => 'file',
-				'path' => defined('ILLUMINATE_CACHE') ? ILLUMINATE_CACHE : trailingslashit(wp_upload_dir()['basedir']) . '.cache'
-			]
-		];
+        $storeName = $driver . 'Driver';
+        $setupName = 'setup' . ucfirst($driver) . 'Driver';
 
-		$container['files'] = new Filesystem;
+        if (!static::$$storeName) {
+            $this->$setupName();
+        }
 
-		$cacheManager = new CacheManager($container);
+        return static::$$storeName;
+    }
 
-		static::$store = $cacheManager->store();
-	}
+    private function setupFileDriver()
+    {
+        $container = new Container;
 
-	/**
+        $container['config'] = [
+            'cache.default' => 'file',
+            'cache.stores.file' => [
+                'driver' => 'file',
+                'path' => defined('ILLUMINATE_CACHE') ? ILLUMINATE_CACHE : trailingslashit(wp_upload_dir()['basedir']) . '.cache'
+            ]
+        ];
+
+        $container['files'] = new Filesystem;
+
+        $cacheManager = new CacheManager($container);
+
+        static::$fileDriver = $cacheManager->store();
+    }
+
+    private function setupRedisDriver()
+    {
+        $container = new Container;
+
+        $container['config'] = [
+            'cache.default' => 'redis',
+            'cache.stores.redis' => [
+                'driver' => 'redis',
+                'path' => defined('REDIS_CONNECTION') ? REDIS_CONNECTION : 'default'
+            ],
+            'cache.prefix' => defined('REDIS_PREFIX') ? REDIS_PREFIX : 'illumipress',
+            'database.redis' => [
+                'cluster' => false,
+                'default' => [
+                    'host' => defined('REDIS_HOST') ? REDIS_HOST : '127.0.0.1',
+                    'port' => defined('REDIS_PORT') ? REDIS_PORT : '6379',
+                    'database' => 0,
+                ],
+            ]
+        ];
+
+        $container['redis'] = new Database($container['config']['database.redis']);
+
+        $cacheManager = new CacheManager($container);
+
+        static::$redisDriver = $cacheManager->store();
+    }
+
+    private function setupRedisDriver()
+    {
+        $container = new Container;
+
+        $container['config'] = [
+            'cache.default' => 'memcached',
+            'cache.prefix' => defined('MEMCACHED_PREFIX') ? memcached_PREFIX : 'illumipress',
+            'cache.stores.memcached' => [
+                'driver' => 'memcached',
+                'servers' => [
+                    [
+                        'host' => defined('MEMCACHED_HOST') ? memcached_HOST : '127.0.0.1',
+                        'port' => defined('MEMCACHED_PORT') ? memcached_PORT : 11211,
+                        'weight' => 100,
+                    ]
+                ]
+            ],
+        ];
+
+        $container['memcached'] = new Database($container['config']['database.memcached']);
+
+        $cacheManager = new CacheManager($container);
+
+        static::$redisDriver = $cacheManager->store();
+    }
+
+    /**
      * Allows you to easily call any underlying validator methods
      *
      * @param $method
@@ -54,5 +117,4 @@ class Cache
     {
         return call_user_func_array([static::$store, $method], $args);
     }
-
 }

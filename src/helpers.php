@@ -98,9 +98,9 @@ if (! function_exists('cache')) {
      * @param mixed $args
      * @return void
      */
-    function cache()
+    function cache($driver = 'file')
     {
-        return new \OwenMelbz\IllumiPress\Cache;
+        return new \OwenMelbz\IllumiPress\Cache($driver);
     }
 }
 
