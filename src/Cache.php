@@ -80,7 +80,7 @@ class Cache
         static::$redisDriver = $cacheManager->store();
     }
 
-    private function setupRedisDriver()
+    private function setupMemcachedDriver()
     {
         $container = new Container;
 
