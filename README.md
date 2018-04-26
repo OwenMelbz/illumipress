@@ -4,7 +4,7 @@
 
 IllumiPress is a simple wrapper for some of the laravel 5 illuminate packages, it allows users to integrate some of the joyful features of Laravel into wordpress.
 
-We currently integrate WordPress with Laravel Blade, HTTP Requests, Responses, Validator and Support (e.g collections, dd, string helpers etc)
+We currently integrate WordPress with Laravel Blade, HTTP Requests, Responses, Validator and Support (e.g collections, dd, string helpers etc), ZTTP, Caching (redis, memcached, file) and Ecryption
 
 ## Installation 
 
@@ -107,7 +107,6 @@ if ($validator->fails()) {
         "success": false
     }
 }
-
 ```
 
 By default we only include the default Laravel i18n error messages, you can follow the Laravel documentation for passing in custom messages https://laravel.com/docs/5.6/validation#custom-error-messages
@@ -130,6 +129,57 @@ If you name your files `template.blade.php` Blade can render the template direct
 The integration is loosely based off https://github.com/tormjens/wp-blade which means you get some starter directives such as, `@post, @wpquery() @acf @acfhas @acffield @acfsub`
 
 You can return a rendered view by using the `view('components.sidebar')` helper
+
+## Cache
+The `illuminate\cache` package is also included which is available by a global `cache()` helper, so you can do things such as `cache()->put('user_10', 'Taylor')` etc.
+
+Currently you can use the file, memcached and redis driver for caching with some basic configurations, Config items are exposed by the following CONSTANTS.
+
+- Redis
+-- `REDIS_CONNECTION` (default = `default`)
+-- `REDIS_PREFIX` (default = `illumipress`)
+-- `REDIS_HOST` (default = `127.0.0.1`)
+-- `REDIS_PORT` (default = `6379`)
+- File
+-- `ILLUMINATE_CACHE` (default = `wp-uploads/.cache`)
+- Memcached
+-- `MEMCACHED_PREFIX` (default = `illumipress`)
+-- `MEMCACHED_HOST` (default = `127.0.0.1`)
+-- `MEMCACHED_PORT` (default = `11211`)
+
+An example usage may be
+
+```
+define('ILLUMINATE_CACHE', './cache');
+
+$tweets = cache()->remember('recent_tweets', $cacheLifeTimeInMinutes = 20, function () {
+    return $tweets = http('https://twitter.com/illumipress.json');
+));
+
+```
+
+## Encryption
+
+The `illuminate/encrypter` is also included for handling certain sensitive data which can be used via the the `encryption` global helper.
+
+By default it will look for a constant called `ILLUMINATE_ENCRYPTION_KEY` which should be a 16 character key which will be used to encrypt the data. Of course you might want to make this unique to each user, to prevent other users decrypting others data.
+
+You can pass in your own encryption key into the helper e.g
+
+```
+$enc = encryption($user->private_key);
+
+$encryptedData = $enc->encrypt('My secret');
+$decryptedData = $enc->decrypt($encryptedData);
+
+echo $decryptedData; // My Secret
+```
+
+## Whoops
+
+By default (sorry) we turn on the `filp/whoops` error handler to enable more friendly errors.
+
+You can turn this off and on via `turn_whoops_off()` and `turn_whoops_on()`
 
 ## HTTP Client / Guzzle / cURL / zttp
 

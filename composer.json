@@ -1,6 +1,6 @@
 {
     "name": "owenmelbz/illumipress",
-    "description": "Simple wrapper for the illuminate support, http response, request, validation classes and blade templating for WordPress",
+    "description": "Simple wrapper for the illuminate support, http response, request, validation, zttp, cache, encryption, blade templating and whoops error handler for WordPress",
     "type": "library",
     "require": {
         "illuminate/http": "5.*",

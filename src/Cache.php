@@ -87,7 +87,7 @@ class Cache
                 'cluster' => false,
                 'default' => [
                     'host' => defined('REDIS_HOST') ? REDIS_HOST : '127.0.0.1',
-                    'port' => defined('REDIS_PORT') ? REDIS_PORT : '6379',
+                    'port' => defined('REDIS_PORT') ? REDIS_PORT : 6379,
                     'database' => 0,
                 ],
             ]
@@ -109,13 +109,13 @@ class Cache
 
         $container['config'] = [
             'cache.default' => 'memcached',
-            'cache.prefix' => defined('MEMCACHED_PREFIX') ? memcached_PREFIX : 'illumipress',
+            'cache.prefix' => defined('MEMCACHED_PREFIX') ? MEMCACHED_PREFIX : 'illumipress',
             'cache.stores.memcached' => [
                 'driver' => 'memcached',
                 'servers' => [
                     [
-                        'host' => defined('MEMCACHED_HOST') ? memcached_HOST : '127.0.0.1',
-                        'port' => defined('MEMCACHED_PORT') ? memcached_PORT : 11211,
+                        'host' => defined('MEMCACHED_HOST') ? MEMCACHED_HOST : '127.0.0.1',
+                        'port' => defined('MEMCACHED_PORT') ? MEMCACHED_PORT : 11211,
                         'weight' => 100,
                     ]
                 ]

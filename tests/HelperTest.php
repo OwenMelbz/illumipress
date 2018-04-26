@@ -1,5 +1,6 @@
 <?php
 
+use Encryption;
 use PHPUnit\Framework\TestCase;
 
 class HelperTest extends TestCase
@@ -20,7 +21,7 @@ class HelperTest extends TestCase
         $this->assertInstanceOf('OwenMelbz\IllumiPress\Validator', validator());
     }
 
-    public function testOtherHelpersLoaded()
+    public function testSupportHelpersLoaded()
     {
         $this->assertInstanceOf('Illuminate\Support\Collection', collect());
         $this->assertTrue(function_exists('dd'));
@@ -36,5 +37,22 @@ class HelperTest extends TestCase
     {
         $this->assertInstanceOf('Zttp\PendingZttpRequest', http());
         $this->assertInternalType('string', http('https://www.google.com'));
+    }
+
+    public function testWhoops()
+    {
+        $this->assertInstanceOf('Whoops\Run', turn_whoops_on());
+        $this->assertInstanceOf('Whoops\Run', turn_whoops_off());
+    }
+
+    public function testEncryptionHelper()
+    {
+        $encryptor = encryption('hgtyuioplkmnbvcx');
+        $secret = 'test';
+        $encrypted = $encryptor->encrypt($secret);
+        $decrypted = $encryptor->decrypt($encrypted);
+
+        $this->assertInstanceOf('OwenMelbz\IllumiPress\Encryption', $encryptor);
+        $this->assertEquals($secret, $decrypted);
     }
 }
