@@ -325,28 +325,28 @@ class Blade
         });
 
         $this->compiler()->directive('acf', function ($expression) {
-            $php = '<?php if ( have_rows'.$expression.' ) : ';
-            $php .= 'while ( have_rows'.$expression.' ) : the_row(); ?>';
+            $php = '<?php if ( have_rows('.$expression.') ) : ';
+            $php .= 'while ( have_rows('.$expression.') ) : the_row(); ?>';
 
             return $php;
         });
 
         $this->compiler()->directive('acffield', function ($expression) {
-            $php = '<?php if ( get_field'.$expression.' ) : ';
-            $php .= 'the_field'.$expression.'; endif; ?>';
+            $php = '<?php if ( get_field('.$expression.') ) : ';
+            $php .= 'the_field('.$expression.'); endif; ?>';
 
             return $php;
         });
 
         $this->compiler()->directive('acfhas', function ($expression) {
-            $php = '<?php if ( $field = get_field'.$expression.' ) : ';
+            $php = '<?php if ( $field = get_field('.$expression.') ) : ';
 
             return $php;
         });
 
         $this->compiler()->directive('acfsub', function ($expression) {
-            $php = '<?php if ( get_sub_field'.$expression.' ) : ';
-            $php .= 'the_sub_field'.$expression.'; endif; ?>';
+            $php = '<?php if ( get_sub_field('.$expression.') ) : ';
+            $php .= 'the_sub_field('.$expression.'); endif; ?>';
 
             return $php;
         });
