@@ -296,59 +296,77 @@ class Blade
      */
     protected function extend()
     {
-        $this->compiler()->directive('post', function () {
+        $endWhile = '<?php endwhile; ?>';
+        $endIf = '<?php endif; ?>';
+        $endWhileEndIf = '<?php endwhile; endif; ?>';
+        $endIfEndWhile = '<?php endif; endwhile; ?>';
+
+        $this->compiler()->directive('post', function ($expression) {
             return '<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>';
         });
 
+        $this->compiler()->directive('endpost', function ($expression) use ($endWhileEndIf) {
+            return $endWhileEndIf;
+        });
+
+        $this->compiler()->directive('field', function ($expression) {
+            $code = <<<EOT
+            <?php if (get_field($expression)) :
+            the_field($expression);
+            endif; ?>
+EOT;
+            return $code;
+        });
+
+        $this->compiler()->directive('subfield', function ($expression) {
+            $code = <<<EOT
+            <?php if (get_sub_field($expression)) :
+            the_sub_field($expression);
+            endif; ?>
+EOT;
+            return $code;
+        });
+
+        $this->compiler()->directive('repeater', function ($expression) {
+            $code = <<<EOT
+            <?php if( have_rows($expression) ):
+                while ( have_rows($expression) ) : the_row(); ?>
+EOT;
+            return $code;
+        });
+
+        $this->compiler()->directive('endrepeater', function ($expression) use ($endWhileEndIf) {
+            return $endWhileEndIf;
+        });
+
+        $this->compiler()->directive('has', function ($expression) {
+            return "<?php if (get_field($expression)) : ?>";
+        });
+
+        $this->compiler()->directive('has', function () use ($endIf) {
+            return $endIf;
+        });
+
+        $this->compiler()->directive('resetwp', function () {
+            return '<?php wp_reset_postdata(); ?>';
+        });
+
         $this->compiler()->directive('wpquery', function ($expression) {
-            $php  = '<?php $bladequery = new WP_Query'.$expression.'; ';
-            $php .= 'if ( $bladequery->have_posts() ) : ';
-            $php .= 'while ( $bladequery->have_posts() ) : ';
-            $php .= '$bladequery->the_post(); ?> ';
-            return $php;
+            $code = <<<EOT
+            <?php \$query = new WP_Query($expression);
+            if (\$query->have_posts()) :
+                while(\$query->have_posts()) : \$query->the_post(); ?>
+EOT;
+            return $code;
         });
 
-        $this->compiler()->directive('wpempty', function () {
-            return '<?php endwhile; ?><?php else: ?>';
-        });
+        $this->compiler()->directive('endwpquery', function () {
+            $code = <<<EOT
+            <?php endwhile; endif; ?>
+            <?php wp_reset_postdata(); ?>
+EOT;
 
-        $this->compiler()->directive('wpend', function () {
-            return '<?php endif; wp_reset_postdata(); ?>';
-        });
-
-        $this->compiler()->directive('acfempty', function () {
-            return '<?php endwhile; ?><?php else: ?>';
-        });
-
-        $this->compiler()->directive('acfend', function () {
-            return '<?php endif; ?>';
-        });
-
-        $this->compiler()->directive('acf', function ($expression) {
-            $php = '<?php if ( have_rows('.$expression.') ) : ';
-            $php .= 'while ( have_rows('.$expression.') ) : the_row(); ?>';
-
-            return $php;
-        });
-
-        $this->compiler()->directive('acffield', function ($expression) {
-            $php = '<?php if ( get_field('.$expression.') ) : ';
-            $php .= 'the_field('.$expression.'); endif; ?>';
-
-            return $php;
-        });
-
-        $this->compiler()->directive('acfhas', function ($expression) {
-            $php = '<?php if ( $field = get_field('.$expression.') ) : ';
-
-            return $php;
-        });
-
-        $this->compiler()->directive('acfsub', function ($expression) {
-            $php = '<?php if ( get_sub_field('.$expression.') ) : ';
-            $php .= 'the_sub_field('.$expression.'); endif; ?>';
-
-            return $php;
+            return $code;
         });
 
         do_action('wp_blade_add_directive', $this->factory->compiler());

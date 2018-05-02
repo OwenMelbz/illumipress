@@ -126,7 +126,33 @@ By default it is disabled - however you can turn it on by using `turn_blade_on()
 
 If you name your files `template.blade.php` Blade can render the template directly, however, if you enable blade and have normal `template.php` files, it will create a dynamic copy within the `wp-content/uploads/.cache/` which will update each time you make a file change.
 
-The integration is loosely based off https://github.com/tormjens/wp-blade which means you get some starter directives such as, `@post, @wpquery() @acf @acfhas @acffield @acfsub`
+The integration is loosely based off https://github.com/tormjens/wp-blade which means you get some starter directives such as:
+
+```
+@post
+    <h1>{{ the_title() }}</h1>
+
+    <p>@field('page_intro')</p>
+
+    @has('extra_intro')
+    <p>@field('extra_intro')</p>
+    @endhas
+
+    <ul>
+        @repeater('services')
+        <li>@subfield('service_name')</li>
+        @endrepeater
+    </ul>
+
+    <div class="related">
+        @wpquery(['author_id' => 21])
+            {{ the_title() }}
+        @endwpquery
+    </div>
+
+@endpost
+
+````
 
 You can return a rendered view by using the `view('components.sidebar')` helper
 
