@@ -351,6 +351,10 @@ EOT;
             return '<?php wp_reset_postdata(); ?>';
         });
 
+        $this->compiler()->directive('resetpost', function () {
+            return '<?php wp_reset_postdata(); ?>';
+        });
+
         $this->compiler()->directive('wpquery', function ($expression) {
             $code = <<<EOT
             <?php \$query = new WP_Query($expression);
@@ -364,6 +368,30 @@ EOT;
             $code = <<<EOT
             <?php endwhile; endif; ?>
             <?php wp_reset_postdata(); ?>
+EOT;
+
+            return $code;
+        });
+
+        $this->compiler()->directive('loadpost', function ($expression) {
+            $code = <<<EOT
+            <?php
+            global \$post;
+            \$post = get_field($expression);
+            setup_postdata(\$post);
+            ?>
+EOT;
+
+            return $code;
+        });
+
+        $this->compiler()->directive('loadsubpost', function ($expression) {
+            $code = <<<EOT
+            <?php
+            global \$post;
+            \$post = get_sub_field($expression);
+            setup_postdata(\$post);
+            ?>
 EOT;
 
             return $code;
