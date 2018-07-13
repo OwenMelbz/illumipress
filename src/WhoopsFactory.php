@@ -22,6 +22,10 @@ class WhoopsFactory
      */
     public static function turnOn()
     {
+        if (defined('WP_DEBUG_DISPLAY') && WP_DEBUG_DISPLAY === false) {
+            return;
+        }
+        
         if (!static::$whoops) {
             static::$whoops = new Run;
             static::$whoops->pushHandler(new PrettyPageHandler);
@@ -37,6 +41,10 @@ class WhoopsFactory
      */
     public static function turnOff()
     {
+        if (defined('WP_DEBUG_DISPLAY') && WP_DEBUG_DISPLAY === false) {
+            return;
+        }
+        
         static::$whoops->unregister();
 
         return static::$whoops;
