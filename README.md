@@ -207,6 +207,8 @@ By default (sorry) we turn on the `filp/whoops` error handler to enable more fri
 
 You can turn this off and on via `turn_whoops_off()` and `turn_whoops_on()`
 
+However when your WordPress configuration defines `WP_DEBUG_DISPLAY` as `false` Whoops will disable itself - regardless of what you type.
+
 ## HTTP Client / Guzzle / cURL / zttp
 
 We also include the `kitetail/zttp` library for a simple curl access via the `http()` helper, for full information we recommend checking out the zttp GitHub documentation
