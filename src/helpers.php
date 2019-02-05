@@ -186,5 +186,3 @@ if (! function_exists('turn_whoops_off')) {
         return \OwenMelbz\IllumiPress\WhoopsFactory::turnOff();
     }
 }
-
-turn_whoops_on(); // You can of course turn this off.
